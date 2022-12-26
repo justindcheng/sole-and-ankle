@@ -5,6 +5,18 @@ import { COLORS, WEIGHTS } from '../../constants';
 import { formatPrice, pluralize, isNewShoe } from '../../utils';
 import Spacer from '../Spacer';
 
+const TAG_STYLES = {
+  'on-sale': {
+    background: '#C5295D'
+  },
+  'new-release': {
+    background: '#6868D9'
+  },
+  'default': {
+    display: 'none'
+  }
+}
+
 const ShoeCard = ({
   slug,
   name,
@@ -31,6 +43,15 @@ const ShoeCard = ({
       ? 'new-release'
       : 'default'
 
+  const tag = variant === 'on-sale' 
+    ? 'Sale'
+    : variant === 'new-release'
+      ? 'Just Released'
+      : ''
+
+
+  const tagStyles = TAG_STYLES[variant]
+
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
@@ -45,23 +66,41 @@ const ShoeCard = ({
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
         </Row>
+        <Tag style={{
+            '--background': tagStyles.background,
+            '--display': tagStyles.display
+          }}>{tag}</Tag>
       </Wrapper>
     </Link>
   );
 };
+
+const Tag = styled.div`
+  position: absolute;
+  right: -4px;
+  top: 12px;
+  padding: 7px 9px 9px 11px;
+  color: white;
+  background: var(--background);
+  display: var(--display);
+`
 
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  position: relative;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
